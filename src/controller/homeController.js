@@ -10,14 +10,19 @@ const handleUserPage = async (req, res) => {
     return res.render("user.ejs", { userList });
 }
 
-const handleCreateNewUser = (req, res) => {
+const handleCreateNewUser = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let username = req.body.username;
 
-
-    userService.createNewUser(email, password, username);
-    return res.redirect("/user");
+    setTimeout(async () => {
+        await userService.createNewUser(email, password, username);
+        return res.status(200).json({
+            message: `A new User is create successfully!`,
+            errCode: 0
+        })
+    }, 1000)
+    
 }
 
 const handleDelteUser = async (req, res) => {
@@ -49,7 +54,7 @@ const handleUserGetAPI = async (req, res) => {
     setTimeout(async () => {
         let userList = await userService.getUserList();
         return res.status(200).json(userList);
-    }, 100)
+    }, 1000)
 
 }
 
